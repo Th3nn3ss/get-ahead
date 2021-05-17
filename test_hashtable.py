@@ -15,15 +15,13 @@ class TestHashTable(unittest.TestCase):
     def test_add_item(self):
         self.hasher.add_item("one", 1)
         self.assertEqual(self.hasher.get_item("one"), 1)
-        self.assertEqual(self.hasher.add_item("one", 1),
-                         "The key 'one' already exists.")
 
     def test_del(self):
         self.hasher.add_item("two", 2)
         self.hasher.add_item("three", 3)
         self.hasher.del_item("two")
         self.assertEqual(self.hasher.get_item("two"),
-                         "The key 'two' does not exist.")
+                         "'two' is not a key in this HashTable")
 
     def test_len(self):
         self.hasher.add_item("ten", 10)
