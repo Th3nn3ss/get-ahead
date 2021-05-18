@@ -2,13 +2,14 @@
 
 # Author: Dennis Chukwunta (c) 2021
 # Email: chuksmcdennis@yahoo.com
+# Gmail: chuksmcdennis11@gmail.com
 
 ''' An attempt at a simple Hash Table using only Arrays(lists) '''
 
 from collections import namedtuple
 import itertools
 
-Entry = namedtuple('Entry', ['key', 'value'])
+Item = namedtuple('Item', ['key', 'value'])
 
 
 class HashTable:
@@ -29,13 +30,13 @@ class HashTable:
     def add_item(self, key, value):
         index = self._index(key)
         this_slot = self._slots[index]
-        for entry_index, entry in enumerate(this_slot):
-            if entry.key == key:
-                this_slot[entry_index] = entry._replace(value=value)
+        for item_index, item in enumerate(this_slot):
+            if item.key == key:
+                this_slot[item_index] = item._replace(value=value)
                 break
         else:
-            entry = Entry(key, value)
-            self._slots[index].append(entry)
+            item = Item(key, value)
+            self._slots[index].append(item)
             self._count = self._count + 1
         if len(self)/len(self._slots) >= self._load_factor:
             self._resize()
@@ -61,18 +62,10 @@ class HashTable:
     def del_item(self, key):
         index = self._index(key)
         this_slot = self._slots[index]
-        for entry_index, entry in enumerate(this_slot):
-            if entry.key == key:
-                del this_slot[entry_index]
+        for item_index, item in enumerate(this_slot):
+            if item.key == key:
+                del this_slot[item_index]
                 break
         else:
             return "'{}' is not a key in this HashTable".format(key)
         self._count = self._count - 1
-
-
-hasher = HashTable()
-hasher.add_item("one", 1)
-hasher.add_item("two", 2)
-hasher.add_item("one", 3)
-print(len(hasher))
-print(hasher._slots)

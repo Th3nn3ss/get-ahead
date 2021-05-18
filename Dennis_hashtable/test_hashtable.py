@@ -4,7 +4,7 @@
 
 
 import unittest
-from dictionary import HashTable
+from hashtable import HashTable
 
 
 class TestHashTable(unittest.TestCase):
@@ -15,6 +15,8 @@ class TestHashTable(unittest.TestCase):
     def test_add_item(self):
         self.hasher.add_item("one", 1)
         self.assertEqual(self.hasher.get_item("one"), 1)
+        self.hasher.add_item("one", "unos")
+        self.assertEqual(self.hasher.get_item("one"), "unos")
 
     def test_del(self):
         self.hasher.add_item("two", 2)
