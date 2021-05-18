@@ -7,7 +7,6 @@
 ''' An attempt at a simple Hash Table using only Arrays(lists) '''
 
 from collections import namedtuple
-import itertools
 
 Item = namedtuple('Item', ['key', 'value'])
 
@@ -28,15 +27,15 @@ class HashTable:
         return self._count
 
     # A method to handle indexing a key using unique hashing
-
-    def _index(self, key):
-        return hash(key) % len(self._slots)
+    @staticmethod
+    def _index(key, slots):
+        return hash(key) % len(slots)
 
     # A method to handle adding new items to the Table
     # It also takes care of handling collisions when two key's are of the same hashed index
 
     def add_item(self, key, value):
-        index = self._index(key)
+        index = self._index(key, self._slots)
         this_slot = self._slots[index]
         for item_index, item in enumerate(this_slot):
             if item.key == key:
@@ -59,11 +58,14 @@ class HashTable:
     @classmethod
     def _insert(cls, slots, key, value):
         index = cls._index(key, slots)
-        slots[index] = value
+        item = Item(key, value)
+        slots[index].append(item)
 
     # A Generator method that generates every item in the Table
     def items(self):
-        yield from itertools.chain.from_iterable(self._slots)
+        for slot in self._slots:
+            for item in slot:
+                yield item
 
     # A method for resizing the Table to 2 times it's original avaliable slots.
 
@@ -75,7 +77,7 @@ class HashTable:
 
     # A method for getting an item from the table using it's key
     def get_item(self, key):
-        index = self._index(key)
+        index = self._index(key, self._slots)
         for element in self._slots[index]:
             if element.key == key:
                 return element.value
@@ -87,7 +89,7 @@ class HashTable:
     # A method for handling deleting an Item from the table using it's key
 
     def del_item(self, key):
-        index = self._index(key)
+        index = self._index(key, self._slots)
         this_slot = self._slots[index]
         for item_index, item in enumerate(this_slot):
             if item.key == key:
